@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920214549430",
+    "project_id": "moohigo-fb6ea",
+    "storage_bucket": "moohigo-fb6ea.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920214549430:android:c3b4ee35be1d8b57ef0717",
+        "android_client_info": {
+          "package_name": "com.example.moohigo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTN7k_XW6NNBgCTw9LKf2tjEZfEmOY9Ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
