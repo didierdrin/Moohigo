@@ -131,7 +131,7 @@ class ReadCubit extends Cubit<ReadState> {
         await flutterTts.stop();
         emit(loadedState.copyWith(isPlaying: false));
       } else {
-        String textToRead = "Title: ${loadedState.document.filename}. Content: ${loadedState.document.fullContent}";
+        String textToRead = _extractTextForTts(loadedState.document);
         if (textToRead.length > 4000) {
            textToRead = textToRead.substring(0, 4000); 
         }
@@ -139,6 +139,27 @@ class ReadCubit extends Cubit<ReadState> {
         emit(loadedState.copyWith(isPlaying: true));
       }
     }
+  }
+
+  String _extractTextForTts(dynamic document) {
+    String text = "Title: ${document.filename ?? 'Document'}. ";
+    
+    // Extract from document structure
+    if (document.structure != null && document.structure.isNotEmpty) {
+      for (var structureItem in document.structure) {
+        if (structureItem.title.isNotEmpty) {
+          text += "${structureItem.title}. ";
+        }
+        if (structureItem.content.isNotEmpty) {
+          text += "${structureItem.content} ";
+        }
+      }
+    } else {
+      // Fallback to fullContent
+      text += document.fullContent ?? 'No content available';
+    }
+    
+    return text;
   }
   
   void selectDocument(LegalDocument doc) {

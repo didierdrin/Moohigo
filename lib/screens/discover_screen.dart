@@ -39,15 +39,19 @@ class DiscoverView extends StatelessWidget {
               // Header
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Image.asset(
-                  logoAsset,
-                  height: 40,
-                  errorBuilder: (context, error, stackTrace) => Text(
-                    "Moohigo",
-                    style: GoogleFonts.outfit(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.transparent,
+                  child: Image.asset(
+                    logoAsset,
+                    height: 40,
+                    errorBuilder: (context, error, stackTrace) => Text(
+                      "Moohigo",
+                      style: GoogleFonts.outfit(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ),

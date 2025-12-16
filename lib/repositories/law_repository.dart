@@ -16,10 +16,10 @@ class LawRepository {
     // Simulating data if firestore is empty or for initial dev
     List<LegalDocument> docs = [];
     
-    // Create some dummy data based on user structure if fetch fails or for demo
+    // Create some dummy data based on user structure if fetch fails or for demo  example_legal_documents
     try {
       final snapshot = await _firestore
-          .collection('example_legal_documents')
+          .collection('legal_documents')
           .limit(10)
           .get();
       

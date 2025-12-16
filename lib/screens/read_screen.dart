@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import '../cubits/read_cubit.dart';
 import '../repositories/law_repository.dart';
+import '../models/law_model.dart';
 
 class ReadScreen extends StatelessWidget {
   const ReadScreen({super.key});
@@ -38,15 +39,18 @@ class ReadView extends StatelessWidget {
                       pinned: true,
                       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                       flexibleSpace: FlexibleSpaceBar(
-                        title: Text(
-                          state.document.filename,
-                          style: GoogleFonts.outfit(
-                             color: Theme.of(context).colorScheme.onSurface,
-                             fontSize: 16,
-                             fontWeight: FontWeight.bold,
+                        title: Padding(
+                          padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                          child: Text(
+                            state.document.filename,
+                            style: GoogleFonts.outfit(
+                               color: Theme.of(context).colorScheme.onSurface,
+                               fontSize: 16,
+                               fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
                         centerTitle: true,
                         background: Container(
@@ -67,15 +71,8 @@ class ReadView extends StatelessWidget {
                     
                     SliverToBoxAdapter(
                       child: Padding(
-                         padding: const EdgeInsets.fromLTRB(24, 24, 24, 100),
-                         child: Text(
-                          state.document.fullContent,
-                          style: GoogleFonts.merriweather(
-                            fontSize: 18,
-                            height: 1.8,
-                            color: Theme.of(context).textTheme.bodyLarge?.color,
-                          ),
-                        ),
+                        padding: const EdgeInsets.fromLTRB(24, 24, 24, 100),
+                        child: _buildDocumentContent(context, state.document),
                       ),
                     ),
                   ],
@@ -116,7 +113,8 @@ class ReadView extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     icon: Icon(state.isPlaying ? Icons.pause : Icons.play_arrow),
-                    label: Text(state.isPlaying ? "Pause" : "Listen"),
+                    label: Text(state.isPlaying ? "" : ""),
+                    // label: Text(state.isPlaying ? "Pause" : "Listen"),
                   ),
                 ),
               ],
@@ -124,6 +122,70 @@ class ReadView extends StatelessWidget {
           }
           return const SizedBox.shrink();
         },
+      ),
+    );
+  }
+
+  Widget _buildDocumentContent(BuildContext context, LegalDocument document) {
+    // Handle structured document
+    if (document.structure.isNotEmpty) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...document.structure.map<Widget>((item) => _buildStructureItem(context, item)).toList(),
+        ],
+      );
+    }
+    
+    // Fallback to fullContent if available
+    return Text(
+      document.fullContent,
+      style: GoogleFonts.merriweather(
+        fontSize: 18,
+        height: 1.8,
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+      ),
+    );
+  }
+
+  Widget _buildStructureItem(BuildContext context, DocumentStructure item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(
+          left: BorderSide(
+            width: 3,
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          ),
+        ),
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (item.title.isNotEmpty)
+            Text(
+              item.title,
+              style: GoogleFonts.outfit(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          
+          const SizedBox(height: 8),
+          
+          if (item.content.isNotEmpty)
+            Text(
+              item.content,
+              style: GoogleFonts.merriweather(
+                fontSize: 16,
+                height: 1.7,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
+            ),
+        ],
       ),
     );
   }
